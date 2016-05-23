@@ -67,11 +67,9 @@ if [ -n "$ext" ]; then
 			;;
 	esac
 fi
-printf "%s\n" "ext = $ext"
 
 # Change the extensions of the passed files
 while [ $# -ge 2 ]; do
-	errmsg_noext="$0: change extension of $1 to \"$ext\": $1 has no extension\n"
 	errmsg_nofile="$0: change extension of $1 to \"$ext\": $1 does not exist\n"
 
 	# Make sure that $1 exists
@@ -84,29 +82,23 @@ while [ $# -ge 2 ]; do
 	# Extract $1's filename from its path
 	filename="${1##*/}"
 
-	# Make sure that $filename has '.' in it
-	case "$filename" in
-		*.*)
-			;;
-		*)
-			perror "$errmsg_noext"
-			shift
-			continue
-			;;
-	esac
-
-	# Make sure that $filename is not hidden with no extension
-	if [ -z "${filename%\.*}" ]; then
-		perror "$errmsg_noext"
-		shift
-		continue
+	# Remove $filename's current extension
+	## If $filename contains an extension, remove it
+	if [ -n "${filename%\.*}" ]; then
+		filename="${filename%\.*}"
 	fi
+	filename_new="${1%\.*}$ext"
 
 	# Change $1's extension
-	if [ -z "$flags" ]; then
-		mv "$1" "${1%\.*}$ext"
+	## Do nothing if there's nothing to do
+	if [ "$1" = "$filename_new" ]; then
+		break
+	## Don't pass $flags if there are none
+	elif [ -z "$flags" ]; then
+		mv "$1" "$filename_new"
+	## Pass $flags if they exist
 	else
-		mv "$flags" "$1" "${1%\.*}$ext"
+		mv "$flags" "$1" "$filename_new"
 	fi
 
 	# Go to the next argument
