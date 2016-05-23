@@ -57,14 +57,17 @@ fi
 for ext; do
 	true
 done
-## Remove up to the first period
-case $ext in
-	.*)
-		ext=${ext##\.}
-		;;
-	*)
-		;;
-esac
+## If extension is not blank, start it with '.'
+if [ -n "$ext" ]; then
+	case $ext in
+		.*)
+			;;
+		*)
+			ext=.${ext}
+			;;
+	esac
+fi
+printf "%s\n" "ext = $ext"
 
 # Change the extensions of the passed files
 while [ $# -ge 2 ]; do
@@ -101,9 +104,9 @@ while [ $# -ge 2 ]; do
 
 	# Change $1's extension
 	if [ -z "$flags" ]; then
-		mv "$1" "${1%\.*}.$ext"
+		mv "$1" "${1%\.*}$ext"
 	else
-		mv "$flags" "$1" "${1%\.*}.$ext"
+		mv "$flags" "$1" "${1%\.*}$ext"
 	fi
 
 	# Go to the next argument
