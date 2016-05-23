@@ -6,21 +6,33 @@
 # Change the extension of a file.
 #
 # usage: chext foo.bar baz
-#
 # Moves foo.bar to foo.baz.
 #
 
+# perror()
+## Print to stderr (file descriptor 2)
+perror()
+{
+	printf "%b" "$*" >&2;
+}
+
+print_usage()
+{
+	perror "usage: $0 [-iv] file [file_2] [file_3] ... extension\n"
+}
 
 flags=""
 # Process options
 ## Add each encountered option to $flags
-while getopts "iv" options; do
-	case "$options" in
+while getopts "iv" option; do
+	case "$option" in
 		i)
 			flags="${flags}i"
 			;;
 		v)
 			flags="${flags}v"
+			;;
+		*)
 			;;
 	esac
 done
@@ -29,14 +41,15 @@ if [ -n "$flags" ]; then
 	flags="-${flags}"
 fi
 
-# Shift past any passed options
+# Shift past all options
 shift $((OPTIND-1))
 [ "$1" = "--" ] && shift
 
-# Usage statement
+# Make sure that there exists at least a file and extension
+## Exit 2 if the passed arguments are invalid
 if [ $# -lt 2 ]; then
-	(>&2 echo "usage: chext [-i] [-v] source ... extension")
-	exit 1
+	print_usage
+	exit 2
 fi
 
 # Get the last argument (i.e., the extension)
@@ -45,12 +58,12 @@ for ext; do
 done
 
 while [ $# -ge 2 ]; do
-	errmsg_noext="chext: change extension of $1 to $ext: File has no extension"
-	errmsg_nofile="chext: change extension of $1 to $ext: No such file"
+	errmsg_noext="$0: change extension of $1 to \"$ext\": $1 has no extension\n"
+	errmsg_nofile="$0: change extension of $1 to \"$ext\": $1 does not exist\n"
 
 	# Check to see if the file exists
 	if [ ! -e "$1" ]; then
-		(>&2 echo "$errmsg_nofile")
+		perror "$errmsg_nofile"
 		shift
 		continue
 	fi
@@ -60,7 +73,7 @@ while [ $# -ge 2 ]; do
 		*.*)
 			;;
 		*)
-			(>&2 echo "$errmsg_noext")
+			perror "$errmsg_noext"
 			shift
 			continue
 			;;
@@ -68,7 +81,7 @@ while [ $# -ge 2 ]; do
 
 	# Check to see if the file is hidden and has no extension
 	if [ -z "${1%\.*}" ]; then
-		(>&2 echo "$errmsg_noext")
+		perror "$errmsg_noext"
 		shift
 		continue
 	fi
