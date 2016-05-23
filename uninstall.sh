@@ -1,10 +1,14 @@
-#! /bin/bash
+#!/bin/sh
+
+#
+# chext uninstallation script
+#
 
 installation_path=$(which chext)
 
 # Remove executable
-rm $installation_path
+rm "$installation_path"
 
 # Remove man page
 prefix=${installation_path%/*}
-rm $prefix/../share/man/man1/chext.1
+rm "${prefix}/../share/man/man1/chext.1"
