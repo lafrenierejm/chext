@@ -1,45 +1,45 @@
-#! /bin/bash
+#!/bin/sh
 
 #
 # chext installation script
 #
 
-# Prompt for an installation path
-echo "Please choose an installation location:"
-echo "1 for /usr/local/bin (default, may require sudo permissions)"
-echo "2 for $HOME/bin"
-read -p "or type another path: " path_input
+# Prompt for the installation path
+printf "%b"\
+	"Please choose an installation location:\n"\
+	"1 for /usr/local/bin (default, may require sudo permissions)\n"\
+	"2 for $HOME/bin\n"\
+	"or type another path: "
+read -r path_input
 
 case ${path_input:-$1} in
-  1|"")
-    install_path="/usr/local"
-    ;;
-  2)
-    install_path="$HOME"
-    ;;
-  *)
-    install_path=$path_input
-    ;;
+	1|"")
+		install_path="/usr/local"
+		;;
+	2)
+		install_path="$HOME"
+		;;
+	*)
+		install_path=$path_input
+		;;
 esac
 
-echo "Installing to $install_path/bin..."
+printf "%s\n" "Installing to ${install_path}/bin..."
 
 # Install the executable
-if [ ! -e $install_path/bin ]
-then
-  mkdir -p $install_path/bin
+if [ ! -e "${install_path}/bin" ]; then
+	mkdir -p "${install_path}/bin"
 fi
-cp chext $install_path/bin
+cp chext "${install_path}/bin"
 
 # Install the man page
-if [ ! -e $install_path/share/man/man1 ]
-then
-  mkdir -p $install_path/share/man/man1
+if [ ! -e "${install_path}/share/man/man1" ]; then
+	mkdir -p "${install_path}/share/man/man1"
 fi
-cp chext.1 $install_path/share/man/man1
+cp chext.1 "${install_path}/share/man/man1"
 
-if hash bats 2> /dev/null
-then
-  echo "BATS found, testing chext..."
-  bats chext.bats
+# Run unit tests
+if hash bats 2> /dev/null; then
+	printf "BATS found, testing chext...\n"
+	bats chext.bats
 fi
