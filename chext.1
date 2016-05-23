@@ -1,36 +1,40 @@
-.TH chext 1 "13 April 2016" "version 0.1"
+.TH CHEXT 1 "2016-05-23" "version 0.1" "General Commands Manual"
+
 .SH NAME
-.B chext 
-- change a file extension
+.B chext
+- A utility to easily change filename extensions.
+
 .SH SYNOPSIS
-.BI chext
-.I source ... extension
-.SH DESCRIPTION
-The
 .B chext
-utility moves the file(s) named by the
-.I source
-operand to the new extension named by the
+.RI [ options ]
+.I file
+.RI [ file_2 ]
+.RI [ file_3 ]
+.RI [ ... ]
 .I extension
-operand.
-.PP
-It is an error for the
-.I source
-operand to lack an extension.
+
+.SH DESCRIPTION
+.B chext
+is a simple shell utility for changing the filename extension of a file or list of files.
+Its accepts one or more files and a single extension as arguments.
+
+.B chext
+uses
+.B mv
+to perform the actual movement of files to their new filenames.
+As such, the file arguments may be absolute paths, relative paths, or a mix of both absolute and relative paths.
+
 .SH OPTIONS
-.TP 8
-.B -i
-Cause
-.B chext
-to write a prompt to standard error before moving a file that would
-overwrite an existing file.  If the response from the standard input begins
-with the character `y' or `Y', the move is attempted.
+
 .TP
-.B -v
-Cause
+.B \-i interactive
+Prompt the user for confirmation before renaming a file over an existing file.
+.TP
+.B -v verbose
+Show the source and destination filenames as
 .B chext
-to be verbose, showing the original and final filename.
-.LP
+renames files.
+
 .SH EXAMPLES
 .nf
 $ touch foo.bar
@@ -44,7 +48,9 @@ $ chext *.baz bar
 $ ls
 foo.bar  qux.bar
 .fi
+
 .SH LICENSE
 The MIT License
+
 .SH AUTHORS
 J. O'Brien Antognini (joe.antognini@gmail.com)
