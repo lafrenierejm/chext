@@ -41,35 +41,48 @@ if [ -n "$flags" ]; then
 	flags="-${flags}"
 fi
 
-# Shift past all options
+# Shift the argument pointer past all options
 shift $((OPTIND-1))
 [ "$1" = "--" ] && shift
 
-# Make sure that there exists at least a file and extension
-## Exit 2 if the passed arguments are invalid
+# Make sure that there exists at least one file and an extension
+## Exit 2 if the passed arguments were insufficient
 if [ $# -lt 2 ]; then
 	print_usage
 	exit 2
 fi
 
-# Get the last argument (i.e., the extension)
+# Get the extension as $ext
+## Get the last argument (i.e., the extension)
 for ext; do
 	true
 done
+## Remove up to the first period
+case $ext in
+	.*)
+		ext=${ext##\.}
+		;;
+	*)
+		;;
+esac
 
+# Change the extensions of the passed files
 while [ $# -ge 2 ]; do
 	errmsg_noext="$0: change extension of $1 to \"$ext\": $1 has no extension\n"
 	errmsg_nofile="$0: change extension of $1 to \"$ext\": $1 does not exist\n"
 
-	# Check to see if the file exists
+	# Check to see if the passed file exists
 	if [ ! -e "$1" ]; then
 		perror "$errmsg_nofile"
 		shift
 		continue
 	fi
 
-	# Check to see if the file has a "." in it
-	case "$1" in
+	# Extract the file's name from its path
+	filename="${1##*/}"
+
+	# Check to see if $filename has '.' in it
+	case "$filename" in
 		*.*)
 			;;
 		*)
@@ -79,8 +92,8 @@ while [ $# -ge 2 ]; do
 			;;
 	esac
 
-	# Check to see if the file is hidden and has no extension
-	if [ -z "${1%\.*}" ]; then
+	# Check to see if $filename is just hidden and has no extension
+	if [ -z "${filename%\.*}" ]; then
 		perror "$errmsg_noext"
 		shift
 		continue
@@ -92,5 +105,7 @@ while [ $# -ge 2 ]; do
 	else
 		mv "$flags" "$1" "${1%\.*}.$ext"
 	fi
+
+	# Go to the next argument
 	shift
 done
