@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/sh
 
 #
 # chext
@@ -10,67 +10,74 @@
 # Moves foo.bar to foo.baz.
 #
 
-vflag=""
-iflag=""
-# Process command line arguments
-while getopts "vi" opt
-do
-  case "$opt" in
-  v)
-    vflag="-v"
-    ;;
-  i)
-    iflag="-i"
-    ;;
-  esac
-done
 
+flags=""
+# Process options
+## Add each encountered option to $flags
+while getopts "iv" options; do
+	case "$options" in
+		i)
+			flags="${flags}i"
+			;;
+		v)
+			flags="${flags}v"
+			;;
+	esac
+done
+## If there were any options, prefix them with '-'
+if [ -n "$flags" ]; then
+	flags="-${flags}"
+fi
+
+# Shift past any passed options
 shift $((OPTIND-1))
 [ "$1" = "--" ] && shift
 
 # Usage statement
-if [[ $# -lt 2 ]]
-then
-  (>&2 echo "usage: chext [-i] [-v] source ... extension")
-  exit 1
+if [ $# -lt 2 ]; then
+	(>&2 echo "usage: chext [-i] [-v] source ... extension")
+	exit 1
 fi
 
 # Get the last argument (i.e., the extension)
-for ext
-do
-  true
+for ext; do
+	true
 done
 
-while [[ $# -ge 2 ]]
-do
-  errmsg_noext="chext: change extension of $1 to $ext: File has no extension"
-  errmsg_nofile="chext: change extension of $1 to $ext: No such file"
+while [ $# -ge 2 ]; do
+	errmsg_noext="chext: change extension of $1 to $ext: File has no extension"
+	errmsg_nofile="chext: change extension of $1 to $ext: No such file"
 
-  # Check to see if the file exists
-  if [ ! -e $1 ]
-  then
-    (>&2 echo "$errmsg_nofile")
-    shift
-    continue
-  fi
+	# Check to see if the file exists
+	if [ ! -e "$1" ]; then
+		(>&2 echo "$errmsg_nofile")
+		shift
+		continue
+	fi
 
-  # Check to see if the file has a "." in it
-  if [[ ! $1 =~ .*\..* ]]
-  then
-    (>&2 echo "$errmsg_noext")
-    shift
-    continue
-  fi  
+	# Check to see if the file has a "." in it
+	case "$1" in
+		*.*)
+			;;
+		*)
+			(>&2 echo "$errmsg_noext")
+			shift
+			continue
+			;;
+	esac
 
-  # Check to see if the file is hidden and has no extension
-  if [ -z ${1%\.*} ]
-  then
-    (>&2 echo "$errmsg_noext")
-    shift
-    continue
-  fi
+	# Check to see if the file is hidden and has no extension
+	if [ -z "${1%\.*}" ]; then
+		(>&2 echo "$errmsg_noext")
+		shift
+		continue
+	fi
 
-  # Change the extension
-  mv $vflag $iflag $1 ${1%\.*}.$ext
-  shift
+	# Change the extension
+	if [ -z "$flags" ]; then
+		mv "$1" "${1%\.*}.$ext"
+	else
+		mv "$flags" "$1" "${1%\.*}.$ext"
+	fi
+	shift
 done
