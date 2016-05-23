@@ -9,21 +9,21 @@
 # Moves foo.bar to foo.baz.
 #
 
-# perror()
-## Print to stderr (file descriptor 2)
+# Print to stderr (file descriptor 2)
 perror()
 {
 	printf "%b" "$*" >&2;
 }
 
+# Print the usage message for this script
 print_usage()
 {
 	perror "usage: $0 [-iv] file [file_2] [file_3] ... extension\n"
 }
 
-flags=""
 # Process options
 ## Add each encountered option to $flags
+flags=""
 while getopts "iv" option; do
 	case "$option" in
 		i)
@@ -71,17 +71,17 @@ while [ $# -ge 2 ]; do
 	errmsg_noext="$0: change extension of $1 to \"$ext\": $1 has no extension\n"
 	errmsg_nofile="$0: change extension of $1 to \"$ext\": $1 does not exist\n"
 
-	# Check to see if the passed file exists
+	# Make sure that $1 exists
 	if [ ! -e "$1" ]; then
 		perror "$errmsg_nofile"
 		shift
 		continue
 	fi
 
-	# Extract the file's name from its path
+	# Extract $1's filename from its path
 	filename="${1##*/}"
 
-	# Check to see if $filename has '.' in it
+	# Make sure that $filename has '.' in it
 	case "$filename" in
 		*.*)
 			;;
@@ -92,14 +92,14 @@ while [ $# -ge 2 ]; do
 			;;
 	esac
 
-	# Check to see if $filename is just hidden and has no extension
+	# Make sure that $filename is not hidden with no extension
 	if [ -z "${filename%\.*}" ]; then
 		perror "$errmsg_noext"
 		shift
 		continue
 	fi
 
-	# Change the extension
+	# Change $1's extension
 	if [ -z "$flags" ]; then
 		mv "$1" "${1%\.*}.$ext"
 	else
