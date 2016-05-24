@@ -15,17 +15,25 @@
 
 .SH DESCRIPTION
 .B chext
-is a simple shell utility for changing the filename extension of a file or list of files.
-Its accepts one or more files and a single extension as arguments.
+is a simple shell utility for adding, removing, and changing filename extensions, where an extension is the last substring in a filename to begin with a period.
 
 .B chext
-uses
+accepts one or more files and a single extension as arguments.
+Files may be specified individually or as regex.
+
 .B mv
-to perform the actual movement of files to their new filenames.
+is used to perform the actual movement of files to their new filenames.
 As such, the file arguments may be absolute paths, relative paths, or a mix of both absolute and relative paths.
 
-.SH OPTIONS
+File arguments without any current extension will have
+.I extension
+appended to them.
 
+Removing extensions is done by passing
+.I extension
+as an empty string ("").
+
+.SH OPTIONS
 .TP
 .B \-i interactive
 Prompt the user for confirmation before renaming a file over an existing file.

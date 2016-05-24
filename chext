@@ -87,6 +87,8 @@ while [ $# -ge 2 ]; do
 	if [ -n "${filename%\.*}" ]; then
 		filename="${filename%\.*}"
 	fi
+
+	# Create the new filename
 	filename_new="${1%\.*}$ext"
 
 	# Change $1's extension
