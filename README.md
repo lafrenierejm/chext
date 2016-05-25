@@ -3,24 +3,11 @@
 `chext` is a simple shell utility to change the extension of a file or list
 of files.
 
-## Installation
-
-Clone the repository (`git clone
-https://github.com/joe-antognini/chext.git`).  Then run `install.sh`.  
-
-Depending on if you want to install to `/usr/local` (the default) on Linux
-you may need to run `sudo install.sh`.  You can alternatively follow the
-instructions to install locally to `~/bin`.
-
-Or if you want to do it all yourself, copy `chext` to somewhere in your PATH
-and `chext.1` to somewhere in your MANPATH.
-
 ## Options
 
-`-i` -- Interactive mode.  Prompts for confirmation before moving a file
-that would overwrite an existing file.
+`-i` -- interactive. Prompt for confirmation before renaming a file over an existing file.
 
-`-v` -- Verbose mode.  Show the original and final filename.
+`-v` -- verbose. Show the source and destination filenames as files are renamed.
 
 ## Examples
 
@@ -63,7 +50,8 @@ $ chext .foo bar
 chext: change extension of .foo to bar: File has no extension
 ```
 
-## Uninstalling
+## Installation
 
-Run `uninstall.sh`.  This may fail to remove the man page if you put it
-somewhere unusual.
+For the exectuable, copy `chext` to `$PATH`.
+
+For the manpage, copy `chext.1` to `man1/` in `$MANPATH` then index its directory.
