@@ -5,17 +5,14 @@
 #
 # Change the extension of a file.
 #
-# usage: chext foo.bar baz
-# Moves foo.bar to foo.baz.
-#
 
-# Print to stderr (file descriptor 2)
+# Print arguments to file descriptor 2 (stderr)
 perror()
 {
 	printf "%b" "$*" >&2;
 }
 
-# Print the usage message for this script
+# Print the usage message for this script to stderr
 print_usage()
 {
 	perror "usage: $0 [-iv] file [file_2] [file_3] [...] extension\n"
@@ -54,12 +51,11 @@ if [ $# -lt 2 ]; then
 	exit 2
 fi
 
-# Get the extension as $ext
-## Get the last argument (i.e., the extension)
+# Get the last argument as $ext
 for ext; do
 	true
 done
-## If extension is not blank, start it with '.'
+## If extension is not blank, make sure it starts with '.'
 if [ -n "$ext" ]; then
 	case $ext in
 		.*)
@@ -72,7 +68,7 @@ fi
 
 # Change the extensions of the passed files
 while [ $# -ge 2 ]; do
-	errmsg_nofile="$0: change extension of $1 to \"$ext\": $1 does not exist\n"
+	errmsg_nofile="chext: Error changing extension of $1 to \"$ext\": $1 does not exist\n"
 
 	# Make sure that $1 exists
 	if [ ! -e "$1" ]; then
