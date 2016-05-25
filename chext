@@ -24,12 +24,14 @@ print_usage()
 # Process options
 ## Add each encountered option to $flags
 flags=""
+v_flag=""
 while getopts "iv" option; do
 	case "$option" in
 		i)
 			flags="${flags}i"
 			;;
 		v)
+			v_flag="v"
 			flags="${flags}v"
 			;;
 		*)
@@ -82,19 +84,35 @@ while [ $# -ge 2 ]; do
 	# Extract $1's filename from its path
 	filename="${1##*/}"
 
+	# Extract $1's parent directory from its path
+	parent_dir="${1%\/*}"
+#	printf "%s\n" "Parent directory = $parent_dir"
+
 	# Remove $filename's current extension
 	## If $filename contains an extension, remove it
 	if [ -n "${filename%\.*}" ]; then
+#		printf "%s\n" "Removing extension from $filename"
 		filename="${filename%\.*}"
+#		printf "%s\n" "Without its extension it is now $filename"
 	fi
 
 	# Create the new filename
-	filename_new="${1%\.*}$ext"
+	## Don't include $parent_dir if none is needed
+	if [ "$1" = "$parent_dir" ]; then
+		filename_new="${filename}$ext"
+	## Else include $parent_dir in the new filename
+	else
+		filename_new="${parent_dir}/${filename}$ext"
+	fi
+#	printf "%s\n" "New filename = $filename_new"
 
 	# Change $1's extension
 	## Do nothing if there's nothing to do
 	if [ "$1" = "$filename_new" ]; then
-		break
+		## Print a message if verbose flag was passed
+		if [ -n "$v_flag" ]; then
+			printf "%s\n" "Not renaming $1"
+		fi
 	## Don't pass $flags if there are none
 	elif [ -z "$flags" ]; then
 		mv "$1" "$filename_new"
