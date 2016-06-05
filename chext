@@ -102,11 +102,13 @@ while [ $# -ge 2 ]; do
 #	printf "%s\n" "New filename = $filename_new"
 
 	# Change $1's extension
-	## Do nothing if there's nothing to do
+	## Only update $1's timestamps if no rename is necessary
 	if [ "$1" = "$filename_new" ]; then
-		## Print a message if verbose flag was passed
+		# Update the access and modification times of $1
+		touch "$1"
+		# Print a message if verbose flag was passed
 		if [ -n "$v_flag" ]; then
-			printf "%s\n" "Not renaming $1"
+			printf "%s\n" "The filename of $1 did not change"
 		fi
 	## Don't pass $flags if there are none
 	elif [ -z "$flags" ]; then
