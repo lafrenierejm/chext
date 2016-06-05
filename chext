@@ -67,7 +67,8 @@ fi
 
 # Change the extensions of the passed files
 while [ $# -ge 2 ]; do
-	errmsg_nofile="chext: Error changing extension of $1 to \"$ext\": $1 does not exist\n"
+	errmsg_nofile="chext: Error changing extension of \`$1\` to \"$ext\""
+	errmsg_nofile="${errmsg_nofile}: \`$1\` does not exist\n"
 
 	# Make sure that $1 exists
 	if [ ! -e "$1" ]; then
@@ -113,7 +114,7 @@ while [ $# -ge 2 ]; do
 	## Don't pass $flags if there are none
 	elif [ -z "$flags" ]; then
 		mv "$1" "$filename_new"
-	## Pass $flags if they exist
+	## Otherwise pass $flags
 	else
 		mv "$flags" "$1" "$filename_new"
 	fi
