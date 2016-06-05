@@ -18,6 +18,7 @@ print_usage() {
 
 # Process options
 ## Add each encountered option to $flags
+## Keep track of the verbose flag separately in $v_flag
 flags=""
 v_flag=""
 while getopts "iv" option; do
@@ -115,6 +116,6 @@ while [ $# -ge 2 ]; do
 		mv "$flags" "$1" "$filename_new"
 	fi
 
-	# Go to the next argument
+	# Continue to the next argument
 	shift
 done
