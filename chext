@@ -7,14 +7,12 @@
 #
 
 # Print arguments to file descriptor 2 (stderr)
-perror()
-{
+perror() {
 	printf "%b" "$*" >&2;
 }
 
 # Print the usage message for this script to stderr
-print_usage()
-{
+print_usage() {
 	perror "usage: $0 [-iv] file [file_2] [file_3] [...] extension\n"
 }
 
