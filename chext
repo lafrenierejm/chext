@@ -13,7 +13,7 @@ perror() {
 
 # Print the usage message for this script to stderr
 print_usage() {
-	perror "usage: $0 [-iv] file [file_2] [file_3] [...] extension\n"
+	perror "chext usage: $0 [-iv] file [file_2] [file_3] [...] extension\n"
 }
 
 # Process options
