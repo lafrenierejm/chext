@@ -18,16 +18,16 @@ print_usage() {
 
 # Process options
 ## Add each encountered option to $flags
-## Keep track of the verbose flag separately in $v_flag
+## Keep track of the verbose flag separately in $flags_v
 flags=""
-v_flag=""
+flags_v=""
 while getopts "iv" option; do
 	case "$option" in
 		i)
 			flags="${flags}i"
 			;;
 		v)
-			v_flag="v"
+			flags_v="v"
 			flags="${flags}v"
 			;;
 		*)
@@ -108,7 +108,7 @@ while [ $# -ge 2 ]; do
 		# Update the access and modification times of $1
 		touch "$1"
 		# Print a message if verbose flag was passed
-		if [ -n "$v_flag" ]; then
+		if [ -n "$flags_v" ]; then
 			printf "%s\n" "The filename of $1 did not change"
 		fi
 	## Don't pass $flags if there are none
