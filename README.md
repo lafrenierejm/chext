@@ -52,6 +52,6 @@ chext: change extension of .foo to bar: File has no extension
 
 ## Installation
 
-For the exectuable, copy `chext` to `$PATH`.
+For the script itself, copy `chext` to `$PATH`.
 
-For the manpage, copy `chext.1` to `man1/` in `$MANPATH` then index its directory.
+For the manpage, copy `chext.1` to `man1/` in `$MANPATH` then re-index `$MANPATH/man1/`.
