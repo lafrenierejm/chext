@@ -19,15 +19,15 @@ print_usage() {
 # Process options
 ## Add each encountered option to $flags
 ## Keep track of the verbose flag separately in $flags_v
-flags=""
-flags_v=""
-while getopts "iv" option; do
+flags=''
+flags_v=''
+while getopts 'iv' option; do
 	case "$option" in
 		i)
 			flags="${flags}i"
 			;;
 		v)
-			flags_v="v"
+			flags_v='v'
 			flags="${flags}v"
 			;;
 		*)
@@ -41,7 +41,7 @@ fi
 
 # Shift the argument pointer past all options
 shift $((OPTIND-1))
-[ "$1" = "--" ] && shift
+[ "$1" = '--' ] && shift
 
 # Make sure that there exists at least one file and an extension
 ## Exit 2 if the passed arguments were insufficient

@@ -41,28 +41,28 @@ chext="${parent_dir}/chext"
 
 printf "Change foo.txt to foo.csv\n"
 touch "${test_dir}/foo.txt"
-"$chext" "-v" "${test_dir}/foo.txt" "csv"
+"$chext" "-v" "${test_dir}/foo.txt" 'csv'
 if [ ! -e "${test_dir}/foo.csv" ]; then
 	printf "Problem changing foo.txt to foo.csv\n"
 	exit 2
 fi
 
 printf "Remove the extension from foo.csv\n"
-"$chext" "-v" "${test_dir}/foo.csv" ""
+"$chext" "-v" "${test_dir}/foo.csv" ''
 if [ ! -e "${test_dir}/foo" ]; then
 	printf "Problem removing extension from a file\n"
 	exit 3
 fi
 
 printf "Add the txt extension to foo\n"
-"$chext" "-v" "${test_dir}/foo" "txt"
+"$chext" "-v" "${test_dir}/foo" 'txt'
 if [ ! -e "${test_dir}/foo.txt" ]; then
 	printf "Problem adding extension to a file\n"
 	exit 3
 fi
 
 printf "Nothing should happen when changing to txt again\n"
-"$chext" "-v" "${test_dir}/foo.txt" "txt"
+"$chext" "-v" "${test_dir}/foo.txt" 'txt'
 if [ ! -e "${test_dir}/foo.txt" ]; then
 	printf "Problem changing to same extension on a file\n"
 	exit 3
@@ -70,28 +70,28 @@ fi
 
 printf "Change .foo.txt to .foo.csv\n"
 mv "${test_dir}/foo.txt" "${test_dir}/.foo.txt"
-"$chext" "-v" "${test_dir}/.foo.txt" "csv"
+"$chext" "-v" "${test_dir}/.foo.txt" 'csv'
 if [ ! -e "${test_dir}/.foo.csv" ]; then
 	printf "Problem changing extension for a hidden file\n"
 	exit 4
 fi
 
 printf "Remove the extension from .foo.csv\n"
-"$chext" "-v" "${test_dir}/.foo.csv" ""
+"$chext" "-v" "${test_dir}/.foo.csv" ''
 if [ ! -e "${test_dir}/.foo" ]; then
 	printf "Problem removing extension from a hidden file\n"
 	exit 4
 fi
 
 printf "Add the txt extension to .foo\n"
-"$chext" "-v" "${test_dir}/.foo" "txt"
+"$chext" "-v" "${test_dir}/.foo" 'txt'
 if [ ! -e "${test_dir}/.foo.txt" ]; then
 	printf "Problem adding extension to a hidden file\n"
 	exit 3
 fi
 
 printf "Nothing should happen when changing to txt again\n"
-"$chext" "-v" "${test_dir}/.foo.txt" "txt"
+"$chext" "-v" "${test_dir}/.foo.txt" 'txt'
 if [ ! -e "${test_dir}/.foo.txt" ]; then
 	printf "Problem changing to same extension on a hidden file\n"
 	exit 3
