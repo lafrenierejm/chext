@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/lafrenierejm/chext.svg?branch=master)](https://travis-ci.org/lafrenierejm/chext)
+
 # chext - Change file extension(s)
 
 `chext` is a simple shell utility to change the extension of a file or list
