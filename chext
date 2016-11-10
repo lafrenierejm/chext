@@ -82,14 +82,11 @@ while [ $# -ge 2 ]; do
 
 	# Extract $1's parent directory from its path
 	parent_dir="${1%\/*}"
-#	printf "%s\n" "Parent directory = $parent_dir"
 
 	# Remove $filename's current extension
 	## If $filename contains an extension, remove it
 	if [ -n "${filename%\.*}" ]; then
-#		printf "%s\n" "Removing extension from $filename"
 		filename="${filename%\.*}"
-#		printf "%s\n" "Without its extension it is now $filename"
 	fi
 
 	# Create the new filename
@@ -100,7 +97,6 @@ while [ $# -ge 2 ]; do
 	else
 		filename_new="${parent_dir}/${filename}$ext"
 	fi
-#	printf "%s\n" "New filename = $filename_new"
 
 	# Change $1's extension
 	## Only update $1's timestamps if no rename is necessary
