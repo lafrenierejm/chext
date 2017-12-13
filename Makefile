@@ -20,6 +20,7 @@ PROGNAME        := chext
 
 install:
 	$(INSTALL_PROGRAM) -t $(bindir) $(PROGNAME)
+	$(INSTALL) -d $(man1)
 	$(INSTALL_DATA) -t $(man1) $(PROGNAME).$(man1ext) 
 
 test:
